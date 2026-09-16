@@ -54,7 +54,7 @@ Viết plugin Usagi không khó, nhưng cần hiểu:
 
 ```bash
 # Clone repository
-git clone https://github.com/YourUsername/Usagi-Toolkit.git
+git clone https://github.com/sang765/Usagi-Toolkit.git
 cd Usagi-Toolkit
 
 # Cài dependencies
@@ -429,7 +429,7 @@ Usagi-Toolkit/
 
 ```bash
 # Clone repository
-git clone https://github.com/YourUsername/Usagi-Toolkit.git
+git clone https://github.com/sang765/Usagi-Toolkit.git
 cd Usagi-Toolkit
 
 # Cài dependencies
@@ -492,8 +492,8 @@ Tsuki, Usagi và bất kỳ plugin nào được tạo bằng toolkit này vẫn
 
 ## Hỗ trợ
 
-- [GitHub Issues](https://github.com/YourUsername/Usagi-Toolkit/issues)
-- [Documentation](https://github.com/YourUsername/Usagi-Toolkit/wiki)
+- [GitHub Issues](https://github.com/sang765/Usagi-Toolkit/issues)
+- [Documentation](https://github.com/sang765/Usagi-Toolkit/wiki)
 
 ## Bảo mật
 

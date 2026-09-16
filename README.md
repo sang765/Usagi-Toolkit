@@ -54,7 +54,7 @@ Writing a Usagi source plugin isn't hard, but it requires understanding:
 
 ```bash
 # Clone the repository
-git clone https://github.com/YourUsername/Usagi-Toolkit.git
+git clone https://github.com/sang765/Usagi-Toolkit.git
 cd Usagi-Toolkit
 
 # Install dependencies
@@ -431,7 +431,7 @@ Usagi-Toolkit/
 
 ```bash
 # Clone the repository
-git clone https://github.com/YourUsername/Usagi-Toolkit.git
+git clone https://github.com/sang765/Usagi-Toolkit.git
 cd Usagi-Toolkit
 
 # Install dependencies
@@ -494,8 +494,8 @@ Tsuki, Usagi, and any plugins generated with this toolkit remain governed by the
 
 ## Support
 
-- [GitHub Issues](https://github.com/YourUsername/Usagi-Toolkit/issues)
-- [Documentation](https://github.com/YourUsername/Usagi-Toolkit/wiki)
+- [GitHub Issues](https://github.com/sang765/Usagi-Toolkit/issues)
+- [Documentation](https://github.com/sang765/Usagi-Toolkit/wiki)
 
 ## Security
 
