@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "tsuki-plugin-engineering": {
+      "command": "node",
+      "args": ["./bin/run.js"]
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "mcp": {
+    "tsuki-plugin-engineering": {
+      "type": "local",
+      "command": ["node", "./bin/run.js"],
+      "enabled": true
+    }
+  }
+}

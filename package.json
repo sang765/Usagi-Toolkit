@@ -1,0 +1,51 @@
+{
+  "name": "tsuki-llm-toolkit",
+  "version": "0.2.0",
+  "description": "MCP server for building lawful Usagi/Tsuki plugins",
+  "type": "module",
+  "bin": {
+    "tsuki-llm-toolkit": "./bin/run.js"
+  },
+  "scripts": {
+    "start": "tsx server.ts",
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc --noEmit --target ES2022 --module NodeNext --moduleResolution NodeNext --skipLibCheck server.ts scripts/smoke-test.ts",
+    "test": "tsx scripts/smoke-test.ts",
+    "prepack": "npm run build"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.0",
+    "zod": "^3.24.0",
+    "tsx": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.5.0"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "keywords": ["mcp", "tsuki", "usagi", "manga", "plugin"],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UsagiApp/tsuki-llm-toolkit.git"
+  },
+  "homepage": "https://github.com/UsagiApp/tsuki-llm-toolkit#readme",
+  "bugs": {
+    "url": "https://github.com/UsagiApp/tsuki-llm-toolkit/issues"
+  },
+  "files": [
+    "bin",
+    "dist",
+    "server.ts",
+    "skill",
+    "scripts",
+    "tsconfig.json",
+    "install.sh",
+    "uninstall.sh",
+    "README.md",
+    "README_vi.md",
+    "LICENSE"
+  ]
+}
