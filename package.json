@@ -4,8 +4,8 @@
   "description": "MCP server for building lawful Usagi/Tsuki plugins",
   "type": "module",
   "bin": {
-    "tsuki-llm-toolkit": "./bin/run.js",
-    "tsuki-llm-install": "./bin/install.js"
+    "tsuki-llm-toolkit": "./bin/run.ts",
+    "tsuki-llm-install": "./bin/install.ts"
   },
   "scripts": {
     "start": "tsx server.ts",

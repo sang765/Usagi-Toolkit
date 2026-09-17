@@ -76,7 +76,7 @@ cd Usagi-Toolkit
 bun install
 
 # Run the local Bun installer
-bun run bin/install.js
+bun run bin/install.ts
 
 # Copy or symlink the skill directory to your harness's skills directory
 # Example for OpenCode:
@@ -99,7 +99,7 @@ bunx --bun ./tsuki-llm-toolkit-0.2.0.tgz install
 |---------|-------------|
 | `bunx --bun github:sang765/Usagi-Toolkit install` | Auto-detect harnesses and install MCP server + Skill |
 | `bunx --bun tsuki-llm-toolkit install` | Install from a published package |
-| `bun run bin/install.js` | Run the installer from a cloned checkout |
+| `bun run bin/install.ts` | Run the installer from a cloned checkout |
 | `./install.sh` | Deprecated compatibility wrapper for the Bun installer |
 | `./uninstall.sh` | Remove all changes made by the installer |
 | `bun install` | Install development dependencies |
@@ -305,8 +305,8 @@ Create or edit `.mcp.json` (or equivalent config file):
 {
   "mcpServers": {
     "tsuki-plugin-engineering": {
-      "command": "node",
-      "args": ["/absolute/path/to/Usagi-Toolkit/bin/run.js"]
+      "command": "bun",
+      "args": ["/absolute/path/to/Usagi-Toolkit/bin/run.ts"]
     }
   }
 }
@@ -321,7 +321,7 @@ Create or edit `opencode.json`:
   "mcp": {
     "tsuki-plugin-engineering": {
       "type": "local",
-      "command": ["node", "/absolute/path/to/Usagi-Toolkit/bin/run.js"],
+      "command": ["node", "/absolute/path/to/Usagi-Toolkit/bin/run.ts"],
       "enabled": true
     }
   }
@@ -334,8 +334,8 @@ Edit `~/.codex/config.toml`:
 
 ```toml
 [mcp_servers.tsuki-plugin-engineering]
-command = "node"
-args = ["/absolute/path/to/Usagi-Toolkit/bin/run.js"]
+command = "bun"
+args = ["/absolute/path/to/Usagi-Toolkit/bin/run.ts"]
 ```
 
 ### Pi/Senpi
@@ -346,8 +346,8 @@ Create or edit `.pi/mcp.json`:
 {
   "mcpServers": {
     "tsuki-plugin-engineering": {
-      "command": "node",
-      "args": ["/absolute/path/to/Usagi-Toolkit/bin/run.js"]
+      "command": "bun",
+      "args": ["/absolute/path/to/Usagi-Toolkit/bin/run.ts"]
     }
   }
 }
@@ -360,7 +360,7 @@ If you have [Bun](https://bun.sh) installed, use `"command": "bun"` for faster c
 ```json
 {
   "command": "bun",
-  "args": ["/absolute/path/to/Usagi-Toolkit/bin/run.js"]
+  "args": ["/absolute/path/to/Usagi-Toolkit/bin/run.ts"]
 }
 ```
 
@@ -397,7 +397,7 @@ The skill provides LLMs with:
 Usagi-Toolkit/
 ├── server.ts               # MCP server - full Tsuki command suite
 ├── bin/
-│   └── run.js              # stdio launcher (Node/Bun auto-detect)
+│   └── run.ts              # stdio launcher (Node/Bun auto-detect)
 ├── skill/                  # Agent Skill - detailed procedural guide
 │   ├── SKILL.md
 │   └── references/
@@ -410,7 +410,7 @@ Usagi-Toolkit/
 ├── test-fixtures/          # sample chapter fixtures for tests
 │   ├── chapters-v1/
 │   └── chapters-v2/
-├── bin/install.js          # Bun/bunx auto-installer
+├── bin/install.ts          # Bun/bunx auto-installer
 ├── install.sh              # Deprecated compatibility wrapper
 ├── uninstall.sh            # Remove all changes made by the installer
 ├── AGENTS.*.md             # harness-specific behavior guides
@@ -461,7 +461,7 @@ npm test
 ### Project Structure
 
 - `server.ts` - Main MCP server implementation
-- `bin/run.js` - Entry point for stdio communication
+- `bin/run.ts` - Entry point for stdio communication
 - `skill/` - Agent skill documentation
 - `scripts/` - Development and testing scripts
 - `test-fixtures/` - Sample data for testing

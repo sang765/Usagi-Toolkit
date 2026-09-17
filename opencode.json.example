@@ -2,7 +2,7 @@
   "mcp": {
     "tsuki-plugin-engineering": {
       "type": "local",
-      "command": ["node", "./bin/run.js"],
+      "command": ["bun", "./bin/run.ts"],
       "enabled": true
     }
   }

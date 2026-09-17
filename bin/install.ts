@@ -1,42 +1,55 @@
-#!/usr/bin/env node
+#!/usr/bin/env bun
 import { existsSync, mkdirSync, readFileSync, writeFileSync, symlinkSync, cpSync, copyFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { homedir, platform } from "node:os";
 import { fileURLToPath } from "node:url";
+
+type JsonObject = Record<string, unknown>;
 
 const ROOT = dirname(dirname(fileURLToPath(import.meta.url)));
 const HOME = homedir();
 const SERVER_NAME = "tsuki-plugin-engineering";
 const SKILL_SRC = join(ROOT, "skill");
 const args = process.argv.slice(2);
-const packageSpec = args.includes("--package") ? args[args.indexOf("--package") + 1] : process.env.TSUKI_BUNX_PACKAGE || "github:sang765/Usagi-Toolkit";
+const packageIndex = args.indexOf("--package");
+const packageSpec = packageIndex >= 0 && args[packageIndex + 1]
+  ? args[packageIndex + 1]
+  : process.env.TSUKI_BUNX_PACKAGE || "github:sang765/Usagi-Toolkit";
 const mcpCommand = "bunx";
 const mcpArgs = ["--bun", packageSpec];
 
-const blue = (message) => console.log(`\x1b[34m[INFO]\x1b[0m ${message}`);
-const green = (message) => console.log(`\x1b[32m[OK]\x1b[0m ${message}`);
-const yellow = (message) => console.log(`\x1b[33m[WARN]\x1b[0m ${message}`);
-const skip = (message) => console.log(`  - ${message}`);
-const ensureDir = (path) => mkdirSync(dirname(path), { recursive: true });
+const blue = (message: string): void => console.log(`\x1b[34m[INFO]\x1b[0m ${message}`);
+const green = (message: string): void => console.log(`\x1b[32m[OK]\x1b[0m ${message}`);
+const yellow = (message: string): void => console.log(`\x1b[33m[WARN]\x1b[0m ${message}`);
+const skip = (message: string): void => console.log(`  - ${message}`);
+const ensureDir = (path: string): void => { mkdirSync(dirname(path), { recursive: true }); };
 
-function backup(path) {
+function backup(path: string): void {
   if (existsSync(path)) copyFileSync(path, `${path}.bak`);
 }
 
-function mergeJson(path, key) {
+function mergeJson(path: string, key: string): void {
   ensureDir(path);
   backup(path);
-  let data = {};
+  let data: JsonObject = {};
   if (existsSync(path)) {
-    try { data = JSON.parse(readFileSync(path, "utf8")); } catch { yellow(`Could not parse ${path}; replacing with a minimal JSON config`); }
+    try {
+      const parsed: unknown = JSON.parse(readFileSync(path, "utf8"));
+      if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) data = parsed as JsonObject;
+    } catch {
+      yellow(`Could not parse ${path}; replacing with a minimal JSON config`);
+    }
   }
-  data[key] ??= {};
-  data[key][SERVER_NAME] = { command: mcpCommand, args: mcpArgs };
+  const section = data[key] && typeof data[key] === "object" && !Array.isArray(data[key])
+    ? data[key] as JsonObject
+    : {};
+  section[SERVER_NAME] = { command: mcpCommand, args: mcpArgs };
+  data[key] = section;
   writeFileSync(path, `${JSON.stringify(data, null, 2)}\n`);
   green(`Registered MCP server in ${path}`);
 }
 
-function mergeToml(path) {
+function mergeToml(path: string): void {
   ensureDir(path);
   if (!existsSync(path)) writeFileSync(path, "");
   backup(path);
@@ -48,20 +61,27 @@ function mergeToml(path) {
   green(`Registered MCP server in ${path}`);
 }
 
-function linkSkill(destination) {
+function linkSkill(destination: string): void {
   if (!existsSync(SKILL_SRC)) return;
   const target = join(destination, SERVER_NAME);
   mkdirSync(destination, { recursive: true });
   if (existsSync(target)) return skip(`Skill already present at ${target}`);
-  try { symlinkSync(SKILL_SRC, target, "junction"); green(`Linked skill into ${target}`); }
-  catch { cpSync(SKILL_SRC, target, { recursive: true }); green(`Copied skill into ${target}`); }
+  try {
+    symlinkSync(SKILL_SRC, target, "junction");
+    green(`Linked skill into ${target}`);
+  } catch {
+    cpSync(SKILL_SRC, target, { recursive: true });
+    green(`Copied skill into ${target}`);
+  }
 }
 
-function hasHarness(directory, command) {
-  return existsSync(directory) || Boolean(command && process.env.PATH?.split(process.platform === "win32" ? ";" : ":").some((dir) => existsSync(join(dir, command))));
+function hasHarness(directory: string, command: string): boolean {
+  const pathValue = process.env.PATH ?? "";
+  const separator = process.platform === "win32" ? ";" : ":";
+  return existsSync(directory) || pathValue.split(separator).some((dir) => existsSync(join(dir, command)));
 }
 
-function install() {
+function install(): void {
   console.log("\nTsuki Plugin Engineering Toolkit — Bun installer\n");
   blue(`Using Bun package spec: ${packageSpec}`);
   if (!process.versions.bun) yellow("Installer is running under Node; invoke it with bunx for the intended Bun runtime.");

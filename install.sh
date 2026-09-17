@@ -8,7 +8,7 @@ set -eu
 SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 
 if command -v bun >/dev/null 2>&1; then
-  exec bun "$SCRIPT_DIR/bin/install.js" "$@"
+  exec bun "$SCRIPT_DIR/bin/install.ts" "$@"
 fi
 
 printf '%s\n' 'Bun is required. Install Bun and run:' >&2

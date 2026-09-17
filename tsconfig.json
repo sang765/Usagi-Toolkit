@@ -13,6 +13,6 @@
     "resolveJsonModule": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["server.ts", "scripts/smoke-test.ts"],
+  "include": ["server.ts", "scripts/smoke-test.ts", "bin/run.ts", "bin/install.ts"],
   "exclude": ["node_modules", "dist", "generated-tsuki-plugin"]
 }

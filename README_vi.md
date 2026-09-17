@@ -76,7 +76,7 @@ cd Usagi-Toolkit
 bun install
 
 # Chạy Bun installer local
-bun run bin/install.js
+bun run bin/install.ts
 
 # Copy hoặc symlink skill directory vào skills directory của harness
 # Ví dụ cho OpenCode:
@@ -99,7 +99,7 @@ bunx --bun ./tsuki-llm-toolkit-0.2.0.tgz install
 |------|-------|
 | `bunx --bun github:sang765/Usagi-Toolkit install` | Tự phát hiện harness và cài MCP server + Skill |
 | `bunx --bun tsuki-llm-toolkit install` | Cài từ package đã publish |
-| `bun run bin/install.js` | Chạy installer từ repository đã clone |
+| `bun run bin/install.ts` | Chạy installer từ repository đã clone |
 | `./install.sh` | Wrapper tương thích cũ cho Bun installer |
 | `./uninstall.sh` | Xóa các thay đổi do installer tạo ra |
 | `bun install` | Cài development dependencies |
@@ -303,8 +303,8 @@ Tạo hoặc sửa `.mcp.json` (hoặc config file tương ứng):
 {
   "mcpServers": {
     "tsuki-plugin-engineering": {
-      "command": "node",
-      "args": ["/absolute/path/to/Usagi-Toolkit/bin/run.js"]
+      "command": "bun",
+      "args": ["/absolute/path/to/Usagi-Toolkit/bin/run.ts"]
     }
   }
 }
@@ -319,7 +319,7 @@ Tạo hoặc sửa `opencode.json`:
   "mcp": {
     "tsuki-plugin-engineering": {
       "type": "local",
-      "command": ["node", "/absolute/path/to/Usagi-Toolkit/bin/run.js"],
+      "command": ["node", "/absolute/path/to/Usagi-Toolkit/bin/run.ts"],
       "enabled": true
     }
   }
@@ -332,8 +332,8 @@ Sửa `~/.codex/config.toml`:
 
 ```toml
 [mcp_servers.tsuki-plugin-engineering]
-command = "node"
-args = ["/absolute/path/to/Usagi-Toolkit/bin/run.js"]
+command = "bun"
+args = ["/absolute/path/to/Usagi-Toolkit/bin/run.ts"]
 ```
 
 ### Pi/Senpi
@@ -344,8 +344,8 @@ Tạo hoặc sửa `.pi/mcp.json`:
 {
   "mcpServers": {
     "tsuki-plugin-engineering": {
-      "command": "node",
-      "args": ["/absolute/path/to/Usagi-Toolkit/bin/run.js"]
+      "command": "bun",
+      "args": ["/absolute/path/to/Usagi-Toolkit/bin/run.ts"]
     }
   }
 }
@@ -358,7 +358,7 @@ Nếu có [Bun](https://bun.sh), sử dụng `"command": "bun"` để cold start
 ```json
 {
   "command": "bun",
-  "args": ["/absolute/path/to/Usagi-Toolkit/bin/run.js"]
+  "args": ["/absolute/path/to/Usagi-Toolkit/bin/run.ts"]
 }
 ```
 
@@ -395,7 +395,7 @@ Skill cung cấp cho LLM:
 Usagi-Toolkit/
 ├── server.ts               # MCP server - full Tsuki command suite
 ├── bin/
-│   └── run.js              # stdio launcher (Node/Bun auto-detect)
+│   └── run.ts              # stdio launcher (Node/Bun auto-detect)
 ├── skill/                  # Agent Skill - hướng dẫn quy trình chi tiết
 │   ├── SKILL.md
 │   └── references/
@@ -408,7 +408,7 @@ Usagi-Toolkit/
 ├── test-fixtures/          # sample chapter fixtures cho tests
 │   ├── chapters-v1/
 │   └── chapters-v2/
-├── bin/install.js          # Bun/bunx auto-installer
+├── bin/install.ts          # Bun/bunx auto-installer
 ├── install.sh              # Wrapper tương thích cũ
 ├── uninstall.sh            # Xóa tất cả thay đổi do installer tạo ra
 ├── AGENTS.*.md             # harness-specific behavior guides
@@ -459,7 +459,7 @@ npm test
 ### Cấu trúc dự án
 
 - `server.ts` - Triển khai MCP server chính
-- `bin/run.js` - Entry point cho stdio communication
+- `bin/run.ts` - Entry point cho stdio communication
 - `skill/` - Tài liệu agent skill
 - `scripts/` - Scripts phát triển và testing
 - `test-fixtures/` - Dữ liệu mẫu để test
