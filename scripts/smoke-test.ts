@@ -12,7 +12,7 @@ await client.connect(transport);
 const listed = await client.listTools();
 const names = new Set(listed.tools.map((tool) => tool.name));
 const required = [
-  "tsuki_contract", "tsuki_check_dependencies", "tsuki_research_source", "tsuki_discover_endpoints",
+  "tsuki_contract", "tsuki_check_dependencies", "tsuki_classify_access", "tsuki_research_source", "tsuki_discover_endpoints",
   "tsuki_extract_schema", "tsuki_analyze_filters", "tsuki_extract_pages", "tsuki_validate_pages",
   "tsuki_check_image_urls", "tsuki_compare_page_counts", "tsuki_normalize_chapters", "tsuki_scaffold_plugin",
   "tsuki_generate_plugin", "tsuki_generate_fixtures", "tsuki_generate_tests", "tsuki_inspect_plugin",
@@ -22,13 +22,19 @@ const required = [
 for (const name of required) if (!names.has(name)) throw new Error(`Missing MCP tool: ${name}`);
 
 function parse(call: Awaited<ReturnType<typeof client.callTool>>) {
-  const item = call.content?.[0];
-  if (!item || item.type !== "text") throw new Error("Tool did not return text JSON");
+  const item = (call as { content?: Array<{ type: string; text?: string }> }).content?.[0];
+  if (!item || item.type !== "text" || typeof item.text !== "string") throw new Error("Tool did not return text JSON");
   return JSON.parse(item.text);
 }
 
 const contract = parse(await client.callTool({ name: "tsuki_contract", arguments: {} }));
 if (!contract.manga_source || !contract.manga_parser) throw new Error("Contract documents were not loaded");
+
+const access = parse(await client.callTool({
+  name: "tsuki_classify_access",
+  arguments: { capabilities: [{ name: "public_fixture", url: "https://example.com/" }], allow_hosts: ["example.com"] },
+}));
+if (!access.results?.[0]?.verdict) throw new Error("Access classification failed");
 
 const normalized = parse(await client.callTool({
   name: "tsuki_normalize_chapters",
