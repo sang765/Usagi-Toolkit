@@ -46,26 +46,22 @@ Writing a Usagi source plugin isn't hard, but it requires understanding:
 
 ### Requirements
 
-- [Node.js](https://nodejs.org) ≥ 20 **or** [Bun](https://bun.sh)
+- [Bun](https://bun.sh) (required for the recommended `bunx` installer)
+- Node.js ≥ 20 is supported for running the MCP server directly
 - `git`
 - Optional (for building plugins): `java`, Gradle wrapper, `d8` (Android build-tools)
 
-### Quick Install (Recommended)
+### Quick Install with Bunx (Recommended)
 
 ```bash
-# Clone the repository
-git clone https://github.com/sang765/Usagi-Toolkit.git
-cd Usagi-Toolkit
-
-# Install dependencies
-npm install
-
-# Run the installer (auto-detects your harness)
-./install.sh
+# Install and run the harness installer directly from GitHub
+bunx --bun github:sang765/Usagi-Toolkit install
 ```
 
+The installer is implemented in JavaScript and runs through Bun. It detects installed harnesses, registers the MCP server using `bunx`, and links the Skill. No Bash or local dependency installation is required.
+
 The installer will:
-1. Check for required runtime (Node.js/Bun)
+1. Check for the Bun runtime
 2. Detect installed agent harnesses
 3. Register the MCP server in each detected harness
 4. Link the agent skill where supported
@@ -74,8 +70,13 @@ The installer will:
 ### Manual Install
 
 ```bash
-# Install dependencies
-npm install
+# Clone for development or local customization
+git clone https://github.com/sang765/Usagi-Toolkit.git
+cd Usagi-Toolkit
+bun install
+
+# Run the local Bun installer
+bun run bin/install.js
 
 # Copy or symlink the skill directory to your harness's skills directory
 # Example for OpenCode:
@@ -84,14 +85,10 @@ cp -r skill ~/.config/opencode/skills/tsuki-plugin-engineering
 # Add MCP server to your harness config (see Manual Configuration below)
 ```
 
-### From npm Package
+### From a local package
 
 ```bash
-# Global install
-npm install -g ./tsuki-llm-toolkit-0.2.0.tgz
-
-# Or use directly without installing
-npx ./tsuki-llm-toolkit-0.2.0.tgz
+bunx --bun ./tsuki-llm-toolkit-0.2.0.tgz install
 ```
 
 ## Commands
@@ -100,9 +97,12 @@ npx ./tsuki-llm-toolkit-0.2.0.tgz
 
 | Command | Description |
 |---------|-------------|
-| `./install.sh` | Auto-detect harnesses and install MCP server + skill |
-| `./uninstall.sh` | Remove all changes made by install.sh |
-| `npm install` | Install Node.js dependencies |
+| `bunx --bun github:sang765/Usagi-Toolkit install` | Auto-detect harnesses and install MCP server + Skill |
+| `bunx --bun tsuki-llm-toolkit install` | Install from a published package |
+| `bun run bin/install.js` | Run the installer from a cloned checkout |
+| `./install.sh` | Deprecated compatibility wrapper for the Bun installer |
+| `./uninstall.sh` | Remove all changes made by the installer |
+| `bun install` | Install development dependencies |
 | `npm run build` | Compile TypeScript to JavaScript |
 | `npm run typecheck` | Type-check without emitting files |
 | `npm test` | Run smoke tests against test fixtures |
@@ -410,8 +410,9 @@ Usagi-Toolkit/
 ├── test-fixtures/          # sample chapter fixtures for tests
 │   ├── chapters-v1/
 │   └── chapters-v2/
-├── install.sh              # Auto-detect harnesses, install MCP + Skill
-├── uninstall.sh            # Remove all changes made by install.sh
+├── bin/install.js          # Bun/bunx auto-installer
+├── install.sh              # Deprecated compatibility wrapper
+├── uninstall.sh            # Remove all changes made by the installer
 ├── AGENTS.*.md             # harness-specific behavior guides
 ├── package.json
 ├── tsconfig.json
@@ -422,7 +423,7 @@ Usagi-Toolkit/
 
 - **MCP Server** (`server.ts`): Provides 20+ tools for plugin development
 - **Agent Skill** (`skill/SKILL.md`): Procedural guide for LLMs
-- **Auto-installer** (`install.sh`): Detects and configures harnesses
+- **Auto-installer** (`bunx ... install`): Detects and configures harnesses without Bash
 - **Test Fixtures** (`test-fixtures/`): Sample data for testing
 
 ## Development
@@ -435,7 +436,7 @@ git clone https://github.com/sang765/Usagi-Toolkit.git
 cd Usagi-Toolkit
 
 # Install dependencies
-npm install
+bun install
 
 # Start development
 npm start

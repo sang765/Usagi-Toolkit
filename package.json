@@ -4,7 +4,8 @@
   "description": "MCP server for building lawful Usagi/Tsuki plugins",
   "type": "module",
   "bin": {
-    "tsuki-llm-toolkit": "./bin/run.js"
+    "tsuki-llm-toolkit": "./bin/run.js",
+    "tsuki-llm-install": "./bin/install.js"
   },
   "scripts": {
     "start": "tsx server.ts",
@@ -29,11 +30,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/UsagiApp/tsuki-llm-toolkit.git"
+    "url": "git+https://github.com/sang765/Usagi-Toolkit.git"
   },
-  "homepage": "https://github.com/UsagiApp/tsuki-llm-toolkit#readme",
+  "homepage": "https://github.com/sang765/Usagi-Toolkit#readme",
   "bugs": {
-    "url": "https://github.com/UsagiApp/tsuki-llm-toolkit/issues"
+    "url": "https://github.com/sang765/Usagi-Toolkit/issues"
   },
   "files": [
     "bin",

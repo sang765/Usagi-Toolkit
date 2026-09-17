@@ -46,26 +46,22 @@ Viết plugin Usagi không khó, nhưng cần hiểu:
 
 ### Yêu cầu
 
-- [Node.js](https://nodejs.org) ≥ 20 **hoặc** [Bun](https://bun.sh)
+- [Bun](https://bun.sh) (bắt buộc cho installer `bunx` được khuyến nghị)
+- Node.js ≥ 20 được hỗ trợ khi chạy MCP server trực tiếp
 - `git`
 - Tùy chọn (để build plugin): `java`, Gradle wrapper, `d8` (Android build-tools)
 
-### Cài đặt nhanh (Khuyến nghị)
+### Cài đặt nhanh bằng Bunx (Khuyến nghị)
 
 ```bash
-# Clone repository
-git clone https://github.com/sang765/Usagi-Toolkit.git
-cd Usagi-Toolkit
-
-# Cài dependencies
-npm install
-
-# Chạy installer (tự phát hiện harness)
-./install.sh
+# Cài và chạy installer trực tiếp từ GitHub
+bunx --bun github:sang765/Usagi-Toolkit install
 ```
 
+Installer hiện được viết bằng JavaScript và chạy qua Bun. Không cần Bash hoặc cài dependencies cục bộ.
+
 Installer sẽ:
-1. Kiểm tra runtime cần thiết (Node.js/Bun)
+1. Kiểm tra Bun runtime
 2. Phát hiện các harness agent đã cài
 3. Đăng ký MCP server trong mỗi harness
 4. Link agent skill where supported
@@ -74,8 +70,13 @@ Installer sẽ:
 ### Cài đặt thủ công
 
 ```bash
-# Cài dependencies
-npm install
+# Clone để phát triển hoặc tùy chỉnh local
+git clone https://github.com/sang765/Usagi-Toolkit.git
+cd Usagi-Toolkit
+bun install
+
+# Chạy Bun installer local
+bun run bin/install.js
 
 # Copy hoặc symlink skill directory vào skills directory của harness
 # Ví dụ cho OpenCode:
@@ -84,14 +85,10 @@ cp -r skill ~/.config/opencode/skills/tsuki-plugin-engineering
 # Thêm MCP server vào config của harness (xem Cấu hình thủ công bên dưới)
 ```
 
-### Từ npm package
+### Từ local package
 
 ```bash
-# Cài toàn cầu
-npm install -g ./tsuki-llm-toolkit-0.2.0.tgz
-
-# Hoặc sử dụng trực tiếp không cần cài
-npx ./tsuki-llm-toolkit-0.2.0.tgz
+bunx --bun ./tsuki-llm-toolkit-0.2.0.tgz install
 ```
 
 ## Lệnh
@@ -100,9 +97,12 @@ npx ./tsuki-llm-toolkit-0.2.0.tgz
 
 | Lệnh | Mô tả |
 |------|-------|
-| `./install.sh` | Tự phát hiện harness và cài MCP server + skill |
-| `./uninstall.sh` | Xóa tất cả thay đổi do install.sh tạo ra |
-| `npm install` | Cài Node.js dependencies |
+| `bunx --bun github:sang765/Usagi-Toolkit install` | Tự phát hiện harness và cài MCP server + Skill |
+| `bunx --bun tsuki-llm-toolkit install` | Cài từ package đã publish |
+| `bun run bin/install.js` | Chạy installer từ repository đã clone |
+| `./install.sh` | Wrapper tương thích cũ cho Bun installer |
+| `./uninstall.sh` | Xóa các thay đổi do installer tạo ra |
+| `bun install` | Cài development dependencies |
 | `npm run build` | Biên dịch TypeScript sang JavaScript |
 | `npm run typecheck` | Kiểm tra type không emit file |
 | `npm test` | Chạy smoke test với test fixtures |
@@ -408,8 +408,9 @@ Usagi-Toolkit/
 ├── test-fixtures/          # sample chapter fixtures cho tests
 │   ├── chapters-v1/
 │   └── chapters-v2/
-├── install.sh              # Auto-detect harnesses, install MCP + Skill
-├── uninstall.sh            # Xóa tất cả thay đổi do install.sh tạo ra
+├── bin/install.js          # Bun/bunx auto-installer
+├── install.sh              # Wrapper tương thích cũ
+├── uninstall.sh            # Xóa tất cả thay đổi do installer tạo ra
 ├── AGENTS.*.md             # harness-specific behavior guides
 ├── package.json
 ├── tsconfig.json
@@ -420,7 +421,7 @@ Usagi-Toolkit/
 
 - **MCP Server** (`server.ts`): Cung cấp 20+ tools cho phát triển plugin
 - **Agent Skill** (`skill/SKILL.md`): Hướng dẫn quy trình cho LLM
-- **Auto-installer** (`install.sh`): Phát hiện và cấu hình harnesses
+- **Auto-installer** (`bunx ... install`): Phát hiện và cấu hình harnesses không cần Bash
 - **Test Fixtures** (`test-fixtures/`: Dữ liệu mẫu để test
 
 ## Phát triển
@@ -433,7 +434,7 @@ git clone https://github.com/sang765/Usagi-Toolkit.git
 cd Usagi-Toolkit
 
 # Cài dependencies
-npm install
+bun install
 
 # Bắt đầu phát triển
 npm start
